@@ -1,10 +1,19 @@
 import React from "react";
 import { Table } from "react-bootstrap";
+import { useAuth } from "../contexts/AuthContext";
+import { useHistory} from "react-router-dom";
+
+
 
 export default function Dashboard() {
-  return (
-    <>
-      <h1 className="">Attack On Titan</h1>
+
+  const { currentUser } = useAuth();
+  const history = useHistory();
+
+  function userExist(){
+    return(
+      <>
+      <h1 className="">Anime of {currentUser.email}</h1>
       <Table striped bordered hover>
         <thead>
           <tr>
@@ -28,5 +37,17 @@ export default function Dashboard() {
         </tbody>
       </Table>
     </>
-  );
+    )
+  }
+  function userNotExist(){
+    return( history.push("/login")
+    )
+  }
+
+
+  return (
+    <>
+    {currentUser ? userExist() : userNotExist()}
+    </>
+  )
 }
