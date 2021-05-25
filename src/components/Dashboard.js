@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import {
   Table,
   Navbar,
@@ -11,9 +11,14 @@ import { useAuth } from "../contexts/AuthContext";
 import { useHistory } from "react-router-dom";
 
 export default function Dashboard() {
-  const { currentUser, logOut } = useAuth();
+  const { currentUser, logOut,AnimeData,getAnimeData } = useAuth();
   const history = useHistory();
   const [error, setError] = useState("");
+
+
+  useEffect(()=>{
+    getAnimeData();
+  },[currentUser])
 
   async function handleLogout() {
     try {
@@ -24,7 +29,10 @@ export default function Dashboard() {
       setError("Failed to Sign Out ");
     }
   }
+
+
   function userExist() {
+    
     return (
       <>
         <Navbar bg="light" expand="lg">
@@ -46,16 +54,16 @@ export default function Dashboard() {
               <tr>
                 <th>Image</th>
                 <th>Name</th>
-                <th>Caracteristique</th>
+                <th>Caracteristics</th>
               </tr>
             </thead>
             <tbody>
               <tr>
                 <td style={{ height: "20rem", width: "20rem" }}>
-                  <Image src="/Levi.png" alt="not found" fluid />
+                  <Image src={AnimeData?AnimeData.Image:""} alt="not found" fluid />
                 </td>
-                <td>Levi</td>
-                <td>Titan Slayer</td>
+                <td>{AnimeData?AnimeData.Name:""}</td>
+                <td>{AnimeData?AnimeData.Characteristics:""}</td>
               </tr>
             </tbody>
           </Table>

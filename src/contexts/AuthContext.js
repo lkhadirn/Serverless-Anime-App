@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import { auth } from "../firebase";
+import axios from "axios";
 
 const AuthContext = React.createContext();
 
@@ -10,6 +11,7 @@ export function useAuth() {
 export function AuthProvider({ children }) {
   const [currentUser, setCurrentuser] = useState();
   const [loading, setLoading] = useState(true);
+  const [AnimeData, setAnimeData] = useState();
 
   function signup(email, password) {
     return auth.createUserWithEmailAndPassword(email, password);
@@ -19,8 +21,21 @@ export function AuthProvider({ children }) {
     return auth.signInWithEmailAndPassword(email, password);
   }
 
-  function logOut (){
+  function logOut() {
     return auth.signOut();
+  }
+
+  function getAnimeData() {
+    axios
+      .get(
+        "https://us-central1-tp-serverless-697b2.cloudfunctions.net/helloWorld"
+      )
+      .then((res) => {
+        setAnimeData(res.data);
+        console.log(res.data);
+      }).catch(err => {
+        console.log(err);
+      })
   }
 
   useEffect(() => {
@@ -36,7 +51,9 @@ export function AuthProvider({ children }) {
     currentUser,
     signup,
     login,
-    logOut
+    logOut,
+    AnimeData,
+    getAnimeData,
   };
 
   return (
