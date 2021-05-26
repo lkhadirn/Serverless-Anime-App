@@ -1,6 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
 import { auth } from "../firebase";
 import axios from "axios";
+import firebase from 'firebase/app'
+
 
 const AuthContext = React.createContext();
 
@@ -21,6 +23,30 @@ export function AuthProvider({ children }) {
     return auth.signInWithEmailAndPassword(email, password);
   }
 
+  function loginWithGoogle() {
+    var provider = new firebase.auth.GoogleAuthProvider();
+    return auth.signInWithPopup(provider)
+      // .then((result) => {
+      //   /** @type {firebase.auth.OAuthCredential} */
+      //   var credential = result.credential;
+      //   // This gives you a Google Access Token. You can use it to access the Google API.
+      //   var token = credential.accessToken;
+      //   // The signed-in user info.
+      //   var user = result.user;
+      //   // ...
+      // })
+      // .catch((error) => {
+      //   // Handle Errors here.
+      //   var errorCode = error.code;
+      //   var errorMessage = error.message;
+      //   // The email of the user's account used.
+      //   var email = error.email;
+      //   // The firebase.auth.AuthCredential type that was used.
+      //   var credential = error.credential;
+      //   // ...
+      // });
+  }
+
   function logOut() {
     return auth.signOut();
   }
@@ -33,9 +59,10 @@ export function AuthProvider({ children }) {
       .then((res) => {
         setAnimeData(res.data);
         console.log(res.data);
-      }).catch(err => {
-        console.log(err);
       })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   useEffect(() => {
@@ -54,6 +81,7 @@ export function AuthProvider({ children }) {
     logOut,
     AnimeData,
     getAnimeData,
+    loginWithGoogle
   };
 
   return (

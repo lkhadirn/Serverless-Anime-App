@@ -1,16 +1,17 @@
 import React, { useRef, useState } from "react";
-import { Form, Button, Card,Alert } from "react-bootstrap";
-import { Link ,useHistory} from "react-router-dom";
+import { Form, Button, Card, Alert, Row, Col } from "react-bootstrap";
+import { Link, useHistory } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { FcGoogle } from "react-icons/fc";
+import { FaFacebook } from "react-icons/fa";
 
 export default function Login() {
   const emailRef = useRef();
   const passwordRef = useRef();
-  const { login } = useAuth();
+  const { login, loginWithGoogle } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const history = useHistory();
-
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -19,14 +20,26 @@ export default function Login() {
       setError("");
       setLoading(true);
       await login(emailRef.current.value, passwordRef.current.value);
-      history.push("/")
+      history.push("/");
     } catch (error) {
       setError("Failed to Sign In ");
     }
     setLoading(false);
   }
+  async function handleGoogleClick() {
+    try {
+      setError("");
+      setLoading(true);
+      await loginWithGoogle();
+      history.push("/");
+    } catch (error) {
+      setError("Failed to Sign In ");
+    }
+    setLoading(false);
+  }
+  async function handleFacebookClick(){
 
-
+  }
 
   return (
     <>
@@ -51,6 +64,14 @@ export default function Login() {
               Log In
             </Button>
           </Form>
+          <Row xs={6} className="mt-2 justify-content-center">
+            <Button variant="light" onClick={handleGoogleClick} className="m-2">
+              <FcGoogle  size={30} />
+            </Button>
+            <Button variant="light"onClick={handleFacebookClick} className="m-2">
+            <FaFacebook size={30}/>
+            </Button>
+          </Row>
         </Card.Body>
       </Card>
       <div className="w-100 text-center mt-2">
