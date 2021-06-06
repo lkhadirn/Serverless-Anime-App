@@ -1,0 +1,8 @@
+stages:
+ - stage_a
+
+job_1:
+ stage: stage_a
+ image: node:12-alpine
+ script:
+  - node --version
