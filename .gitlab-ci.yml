@@ -1,8 +1,17 @@
 stages:
- - stage_a
+ - install
+ - test
 
-job_1:
- stage: stage_a
+dependencies:
+ stage: install
  image: node:12-alpine
  script:
-  - node --version
+  - npm install
+
+test:
+ stage: test
+ image: trion/ng-cli-karma
+ allow_failure: true
+ script:
+  - npm install
+  - ng test --progress false --watch
