@@ -14,4 +14,4 @@ test:
  allow_failure: true
  script:
   - npm install
-  - ng test --progress false --watch
+  - npm test
