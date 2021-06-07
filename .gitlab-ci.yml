@@ -22,4 +22,4 @@ deploy:
   - apt-get update -qy
   - apt-get install -y ruby-dev
   - gem install dpl
-  - dpl --provider=heroku --app=HEROKU_AOT_FROM_GITLAB --api-key=223755e5-ea4f-4fdb-9d08-a7347b975674
+  - dpl --provider=heroku --app=aot-anime --api-key=223755e5-ea4f-4fdb-9d08-a7347b975674
